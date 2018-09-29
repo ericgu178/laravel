@@ -1,5 +1,5 @@
 @extends('public.admin')
-<style type="text/css">
+@section('_style')
 .pagination {
     display: inline-block;
     padding: 0;
@@ -29,7 +29,7 @@
     display: block;
     background: #000;
 }
-</style>
+@endsection
 @section('main')
 
 <div class="layui-body">
@@ -43,10 +43,10 @@
           <div class="layui-tab-item layui-show">
             <form class="layui-form" action="">
                 <div class="layui-input-inline">
-                    共 <b style="color:red">20条</b> 用户数据  只能软删
+                    共 <b style="color:red">{{$tot}}条</b> 商品数据  只能软删
                 </div>
                 <div class="layui-input-inline">
-                  <input type="text" name="search" required  lay-verify="required" placeholder="输入电话号查询" autocomplete="off" class="layui-input">
+                  <input type="text" name="search" required  lay-verify="required" placeholder="search" autocomplete="off" class="layui-input">
                 </div>
                 <button class="layui-btn layui-btn-sm">搜索</button>
                   <a href="users" class="layui-btn layui-btn-sm">返回</a>
@@ -57,6 +57,8 @@
                   <col width="150">
                   <col width="150">
                   <col width="60">
+                  <col width="60">
+                  <col width="200">
                   <col width="200">
                   <col width="200">
                   <col>
@@ -67,19 +69,27 @@
                     <th>商品名称</th>
                     <th>分类</th>
                     <th>价格</th>
+                    <th>数量</th>
+                    <th>图片</th>
                     <th>介绍</th>
                     <th>加入时间</th>
+                    <th>操作</th>
                   </tr> 
                 </thead>
-                <tbody id="sou">
+                <tbody>
+                  @foreach($data2 as $val)
                   <tr>
-                   <td>1</td>
-                   <td>2</td>
-                   <td>3</td>
-                   <td>4</td>
-                   <td>5</td>
-                   <td>6</td>
+                    <td>{{$val->id}}</td>
+                    <td>{{$val->title}}</td>
+                    <td>{{$val->typeid}}</td>
+                    <td>￥{{$val->price}}</td>
+                    <td>{{$val->num}}</td>
+                    <td><img src="{{$val->img}}"  height="100" alt=""></td>
+                    <td>{{$val->text}}</td>
+                    <td>{{$val->create_time}}</td>
+                    <td><a href="javascript:;" onclick="" class="layui-btn layui-btn-sm">修改</a><a href="javascript:;" onclick="" class="layui-btn layui-btn-sm">删除</a></td>
                    </tr>
+                   @endforeach
                 </tbody>
               </table>
           </div>
@@ -101,12 +111,36 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">所属分类</label>
                     <div class="layui-input-inline">
-                      <select name="city">
+                      <select name="path">
+                        <option value="">请选择分类</option>
                         @foreach($data as $value)
-                        <option value="{{$value->p}}">{{$value->html}}</option>
+                        <option value="{{$value->title}}">{{$value->html}}</option>
                          @endforeach
                       </select>
                   </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label">商品价格</label>
+                  <div class="layui-input-block">
+                    <div class="layui-input-inline">
+                       <input type="text" name="price" required  lay-verify="required" placeholder="价格" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label">商品数量</label>
+                  <div class="layui-input-block">
+                    <div class="layui-input-inline">
+                       <input type="text" name="num" required  lay-verify="required" placeholder="数量" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品图片</label>
+                      <img id="goods" src="" width="200" height="200">
+                      <button type="button" class="layui-btn" id="upload">
+                        <i class="layui-icon">&#xe67c;</i>上传图片(<2M)
+                    </button>
                 </div>
                 <div class="layui-form-item">
                   <div class="layui-input-block">
@@ -125,7 +159,40 @@
 @endsection
 
 @section('js')
-layui.use('form', function(){
-    var form = layui.form(); //只有执行了这一步，部分表单元素才会修饰成功 
+layui.use(['form','upload'], function(){
+    var form = layui.form;
+    var upload = layui.upload;
+    var imgsrc = ""
+
+  //图片上传
+  var uploadInst = upload.render({
+    elem: '#upload' //绑定元素
+    ,url: '/admin/goods/upload' //上传接口
+    ,exts: 'jpg|png|gif'
+    ,field:'goodsimg'
+    ,multiple: true
+    ,data:{"_token":"{{csrf_token()}}"}
+    ,done: function(res){
+      imgsrc = res.ResultData
+      $("#goods").attr('src','/uploads/goods/'+res.ResultData)
+    }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+
+  //提交商品信息
+
+  form.on('submit(formDemo)', function(data){
+        data.field.goodsimg = imgsrc;
+   $.post("/admin/goods",{data:data.field,"_token":'{{csrf_token()}}'},function(res){
+     if(res.errcode>0){
+       layer.msg(res.errmsg)
+     }else{
+       layer.msg(res.errmsg)
+     }
+   },'json')
+    return false;
+  });
 });
 @endsection

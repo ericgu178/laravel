@@ -53,5 +53,7 @@ route::resource('/admin/types','Admin\TypesController');
 */
 
 Route::resource('/admin/goods','Admin\GoodsController');
+// 上传图片
+Route::any('/admin/goods/upload','Admin\GoodsController@upload');
 
 

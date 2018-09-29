@@ -1,5 +1,5 @@
 @extends('public.admin')
-<style type="text/css">
+@section('_style')
 .pagination {
     display: inline-block;
     padding: 0;
@@ -29,7 +29,7 @@
     display: block;
     background: #000;
 }
-</style>
+@endsection
 @section('main')
 
 <div class="layui-body">

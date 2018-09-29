@@ -9,13 +9,14 @@
 <link rel="stylesheet" type="text/css" href="/style/admin/layui/css/layui.css">
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/style/admin/layui/layui.js"></script>
+<style>
+  @yield('_style')
+</style>
 </head>
 <body class="layui-layout-body">
         <div class="layui-layout layui-layout-admin">
           <div class="layui-header">
-            <div class="layui-logo">商城管理</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            
+            <div class="layui-logo">商城管理</div>    
             <ul class="layui-nav layui-layout-right">
               <li class="layui-nav-item">
                 <a href="javascript:;">
@@ -59,7 +60,7 @@
         <!-- 占位 -->
           @yield('main')
     <!-- 底部固定区域 -->
-    <div class="layui-footer">© guxuejian.top - 微信二次开发</div>
+    <div class="layui-footer">© guxuejian.top - 商城实战</div>
 </div>                               
         
 </body>
