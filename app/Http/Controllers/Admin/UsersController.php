@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Controllers\Controller;
+use Session;
 class UsersController extends Controller
 {
     public function index(Request $request){
-        // dd();
+        $info = Session::get('info');
+        if(empty($info->username)){
+            return view('admin.login.login');
+        }
         $key = $request->input('search');
         if(!empty($key)){
             $tot = DB::table('user')->where('username','=',"{$key}")->count();

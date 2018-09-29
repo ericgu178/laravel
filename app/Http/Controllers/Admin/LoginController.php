@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Controllers\Controller;
+use Session;
 class LoginController extends Controller
 {
     public function login(Request $request){
@@ -21,7 +22,9 @@ class LoginController extends Controller
             $update['last_time'] = date('Y-m-d H:i:s',time());
             $update['count'] = $res->count+1;
             DB::table('admin')->where('username',$username)->update($update);
+            Session::put('info',$res);
             return array("errcode"=>0);
+
         }
         else{
             return view('admin.login.login');
@@ -46,5 +49,9 @@ class LoginController extends Controller
         else{
             return view('admin.login.register');
         }
+    }
+    // 退出
+    public function logout(){
+        Session::forget('info');
     }
 }

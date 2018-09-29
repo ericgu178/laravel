@@ -45,7 +45,7 @@
         form.on('submit(login)',function (data) {
             // console.log(data.field);
             $.ajax({
-                url:'login',
+                url:'http://2.com/admin/login',
                 data:{data:data.field,"_token":"{{csrf_token()}}"},
                 dataType:'json',
                 type:'post',

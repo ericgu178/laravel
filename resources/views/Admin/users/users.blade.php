@@ -36,7 +36,7 @@
   <div style="padding: 15px;">
   <form class="layui-form" action="">
     <div class="layui-input-inline">
-      共{{$tot}}条用户数据  只能软删
+      共 <b style="color:red">{{$tot}}条</b> 用户数据  只能软删
     </div>
     <div class="layui-input-inline">
       <input type="text" name="search" required  lay-verify="required" placeholder="输入电话号查询" autocomplete="off" class="layui-input">

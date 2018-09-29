@@ -1,22 +1,11 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes 网站的路由
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 // 前台路由
 Route::get('/',"Home\IndexController@index");
 
 // 后台路由
-//登录注册
+//登录退出
 Route::any('/admin/login',"Admin\LoginController@login");
+Route::any('/admin/logout',"Admin\LoginController@logout");
 /*
 |--------------------------------------------------------------------------
 | 管理员管理
@@ -56,5 +45,13 @@ Route::get('/admin/types/model/updatetypes',function(){
 	return view('/admin/types/model/updatetypes');
 });
 route::resource('/admin/types','Admin\TypesController');
+
+/*
+|--------------------------------------------------------------------------
+| 商品管理
+|--------------------------------------------------------------------------
+*/
+
+Route::resource('/admin/goods','Admin\GoodsController');
 
 

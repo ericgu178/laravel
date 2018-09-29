@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use DB;
-
-class AdminController extends HomeController
+use Session;
+class AdminController
 {
     public function index(){
+        $info = Session::get('info');
+        if(empty($info->username)){
+            return view('admin.login.login');
+        }
     	$data = DB::table('admin')->paginate(10);
     	return view('admin.admin.user')->with('data',$data);
     }

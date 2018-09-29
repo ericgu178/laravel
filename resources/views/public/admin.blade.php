@@ -20,7 +20,7 @@
               <li class="layui-nav-item">
                 <a href="javascript:;">
                   <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                  admin
+                  {{Session::get('info')->username}}
                 </a>
                 <dl class="layui-nav-child">
                   <dd><a href="">基本资料</a></dd>
@@ -42,7 +42,7 @@
                     <dd class=""><a href="/admin/admin">管理员管理</a></dd>
                     <dd class=""><a href="/admin/users">会员管理</a></dd>
                     <dd class=""><a href="/admin/types">分类管理</a></dd>
-                    <dd class=""><a href="/wx/index.php/Home/Material/index/type/image.html">商品管理</a></dd>
+                    <dd class=""><a href="/admin/goods">商品管理</a></dd>
                     <dd class=""><a href="/wx/index.php/Home/fans/index.html">订单管理</a></dd>
                   </dl>
                 </li>
@@ -69,4 +69,16 @@
   var element = layui.element;
 });
   @yield('js')
+  function exit(){
+    layui.use('layer', function(){
+      var layer = layui.layer;
+      layer.msg("请重新登录");
+      $.get('http://2.com/admin/logout',{},function(){
+        setTimeout(function(){
+          location.href="http://2.com/admin/login"
+        },1000)
+      })
+    })
+    
+  }
 </script>

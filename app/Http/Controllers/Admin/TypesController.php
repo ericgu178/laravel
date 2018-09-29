@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Controllers\Controller;
+use Session;
 class TypesController extends Controller
 {
     public function index(){
-    	// echo 123;
+    	$info = Session::get('info');
+        if(empty($info->username)){
+            return view('admin.login.login');
+        }
     	$one = DB::table('types')->where('pid','0')->get();
         foreach ($one as $value) {
             $value->zi = DB::table('types')->where('pid',$value->id)->get();
